@@ -1,0 +1,163 @@
+<html>
+
+<head>
+    <title>Tic Tac Toe</title>
+    <style type="text/css">
+    #container{
+        width:310px;
+        height:310px;
+    }
+    .col{
+        border-top:1px solid black;
+        border-right:1px solid black;
+        width:100px;
+        height:100px;
+        float: left;
+    }
+    .row{
+        width:303px;
+        height:100px;
+        border-left:1px solid black;
+
+    }
+
+    .row:last-child{
+        border-bottom:1px solid black;
+
+    }
+    img{
+        position:absolute;
+    }
+
+    </style>
+
+</head>
+    <body>
+        <div id="container">
+            <div class="row">
+                <div class="col" id="col1"></div>
+                <div class="col" id="col2"></div>
+                <div class="col" id="col3"></div>
+            </div>
+
+            <div class="row">
+                <div class="col" id="col4"></div>
+                <div class="col" id="col5"></div>
+                <div class="col" id="col6"></div>
+            </div>
+
+            <div class="row">
+                <div class="col" id="col7"></div>
+                <div class="col" id="col8"></div>
+                <div class="col" id="col9"></div>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function(event) {
+                var showX = "firstChild";
+                var showO = "lastChild";
+                var show;
+                var gameArr = [];
+                function initEvents(){
+                    for(var i=1;i<10;i++){
+                        var el = document.getElementById("col"+i);
+                        (function(i){
+                            el.addEventListener("click",function(){
+                                selectImage(i);
+                            });
+                        })(i);
+                    }
+                }
+                function selectImage(ind){
+                    var el = document.getElementById("col"+ind);
+                    if(currentMove == "player1"){
+                        show = showX;
+                        gameArr[ind-1] = 1;
+                    }else{
+                        show = showO;
+                        gameArr[ind-1] = 2;
+                    }
+                    el[show].style.visibility = 'visible';
+                    if(isGameOver()){
+                        alert("game over "+currentMove+" won");
+                        reset();
+                    };
+                    changePlayerMove();
+                }
+                function isSame(arr){
+                    for(var i=0;i<arr.length;i++){
+                         if(!arr[i]) return false;
+                    }
+                    if((arr[0] === arr[1]) && (arr[2] === arr[0])){
+                        return true;
+                    }
+                    return false;
+                }
+                function isGameOver(){
+                    console.log(gameArr);
+                    if( isSame([gameArr[0],gameArr[1],gameArr[2]]) ||
+                        isSame([gameArr[3],gameArr[4],gameArr[5]]) ||
+                        isSame([gameArr[6],gameArr[7],gameArr[8]]) ||
+                        isSame([gameArr[0],gameArr[3],gameArr[6]]) ||
+                        isSame([gameArr[1],gameArr[4],gameArr[7]]) ||
+                        isSame([gameArr[2],gameArr[5],gameArr[8]]) ||
+                        isSame([gameArr[0],gameArr[4],gameArr[8]]) ||
+                        isSame([gameArr[2],gameArr[4],gameArr[6]])){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                }
+                function changePlayerMove(){
+                    if(currentMove == "player1"){
+                        currentMove = "player2";
+                    }else{
+                        currentMove = "player1";
+                    }
+                }
+                function initImages(){
+                    var xel,oel;
+                    for(var i=1;i<10;i++){
+                        xel = document.createElement("img");
+                        xel.src = "images/x.jpg";
+                        xel.setAttribute('class',"img_x");
+                        document.getElementById("col"+i).appendChild(xel);
+
+                        oel = document.createElement("img");
+                        oel.src = "images/o.jpg";
+                        oel.setAttribute('class',"img_o");
+                        document.getElementById("col"+i).appendChild(oel);
+                    }
+                }
+                function hideAll(){
+                    var xel = document.getElementsByClassName('img_x');
+                    var oel = document.getElementsByClassName('img_o');
+                    for(var i=0;i<9;i++){
+                        xel[i].style.visibility = "hidden";
+                        oel[i].style.visibility = "hidden";
+                    }
+                }
+                function init(){
+                    initEvents();
+                    initImages();
+                    hideAll();
+                    currentMove = "player1";
+                }
+
+                function reset(){
+                    gameArr = [];
+                    hideAll();
+                    currentMove = "player1";
+                }
+
+                function aiMove(){
+
+                }
+
+                init();
+            });
+        </script>
+    </body>
+</html>
